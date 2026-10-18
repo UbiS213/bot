@@ -98,8 +98,8 @@ def calculate(expression: str) -> str:
 async def cmd_start(message: types.Message):
     await message.answer(
         "Привет! Я умный бот.\n"
-        "1. 'Погода в Москве' (теперь реальная!)\n"
-        "2. 'Время в Якутске'\n"
+        "1. 'Погода в Москве'\n"
+        "2. 'Время в Якутск'\n"
         "3. 'Посчитай 2+2*2'"
     )
 
