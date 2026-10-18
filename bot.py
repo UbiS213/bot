@@ -2,7 +2,7 @@ import asyncio
 import logging
 import os
 import math
-import json 
+import json
 import urllib.request
 from datetime import datetime
 import pytz
@@ -21,7 +21,6 @@ WEB_SERVER_PORT = int(os.getenv("PORT", 8080))
 WEBHOOK_PATH = "/webhook"
 WEBHOOK_SECRET = "my-secret-string-123"
 
-# URL вашего облачного приложения (Railway/Render выдаст его после создания)
 BASE_WEBHOOK_URL = os.getenv("BASE_WEBHOOK_URL", "")
 
 dp = Dispatcher()
@@ -38,8 +37,8 @@ def get_weather(city: str) -> str:
             temp = data['current_condition'][0]['temp_C']
             desc = data['current_condition'][0]['weatherDesc'][0]['value']
             return f"В городе {city} сейчас {temp}°C, {desc}."
-    except Exception as e:
-        return f"Не удалось узнать погоду для {city}. Ошибка."
+    except Exception:
+        return f"Не удалось узнать погоду для {city}. Попробуйте позже."
 
 def get_time(timezone: str) -> str:
     try:
@@ -65,7 +64,7 @@ async def cmd_start(message: types.Message):
         "Привет! Я умный бот, работаю в облаке.\n"
         "Примеры запросов:\n"
         "1. 'Погода в Москве'\n"
-        "2. 'Время в Токио'\n"
+        "2. 'Время в Якутске'\n"
         "3. 'Посчитай 2+2*2'"
     )
 
@@ -76,11 +75,12 @@ async def handle_message(message: types.Message):
 
     text = message.text.lower()
 
-    # Простая логика определения намерения (Intent)
+    # --- ОБРАБОТКА ПОГОДЫ ---
     if "погода" in text or "weather" in text:
-        # Пытаемся вытащить город
         words = text.split()
         city = "Москва" # По умолчанию
+        
+        # Ищем предлог "в" и берем следующее слово
         if "в" in words:
             idx = words.index("в")
             if idx + 1 < len(words):
@@ -92,25 +92,33 @@ async def handle_message(message: types.Message):
         res = await asyncio.to_thread(get_weather, city)
         await message.answer(res)
 
+    # --- ОБРАБОТКА ВРЕМЕНИ ---
     elif "время" in text or "time" in text:
-        # Пытаемся вытащить город/зону
         words = text.split()
-        tz = "Europe/Moscow"
+        tz = "Europe/Moscow" # По умолчанию Москва
+        
         if "в" in words:
             idx = words.index("в")
             if idx + 1 < len(words):
                 city_name = words[idx + 1].lower()
-                # Очень примитивный маппинг городов в зоны
+                
+                # Словарь городов и их часовых поясов
                 if "токио" in city_name: tz = "Asia/Tokyo"
                 elif "лондон" in city_name: tz = "Europe/London"
                 elif "нью-йорк" in city_name: tz = "America/New_York"
+                elif "якутск" in city_name: tz = "Asia/Yakutsk"
+                elif "новосибирск" in city_name: tz = "Asia/Novosibirsk"
+                elif "екатеринбург" in city_name: tz = "Asia/Yekaterinburg"
+                elif "владивосток" in city_name: tz = "Asia/Vladivostok"
+                elif "калининград" in city_name: tz = "Europe/Kaliningrad"
+                elif "сочи" in city_name: tz = "Europe/Moscow" # Сочи в московском времени
                 
         await message.answer("🕒 Смотрю время...")
         res = await asyncio.to_thread(get_time, tz)
         await message.answer(res)
 
+    # --- ОБРАБОТКА КАЛЬКУЛЯТОРА ---
     elif "посчитай" in text or "сколько будет" in text:
-        # Извлекаем математическое выражение (все, что похоже на цифры и знаки)
         expr = text.replace("посчитай", "").replace("сколько будет", "").strip()
         res = await asyncio.to_thread(calculate, expr)
         await message.answer(res)
