@@ -88,9 +88,9 @@ def ask_llm(user_text: str) -> str:
             "Authorization": f"Bearer {OPENROUTER_API_KEY}",
             "Content-Type": "application/json"
         }
-        # Используем бесплатную модель
         payload = {
-            "model": "google/gemma-2-9b-it:free", 
+            # Выберите бесплатную модель, которая сейчас работает (например, эту)
+            "model": "google/gemma-3n-e4b-it:free", 
             "messages": [
                 {"role": "system", "content": "Ты — полезный, дружелюбный ассистент. Отвечай кратко и по делу на русском языке."},
                 {"role": "user", "content": user_text}
