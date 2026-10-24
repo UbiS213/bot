@@ -90,7 +90,7 @@ def ask_llm(user_text: str) -> str:
         }
         payload = {
             # Выберите бесплатную модель, которая сейчас работает (например, эту)
-            "model": "google/gemma-3n-e4b-it:free", 
+            "model": "meta-llama/llama-3.1-8b-instruct:free", 
             "messages": [
                 {"role": "system", "content": "Ты — полезный, дружелюбный ассистент. Отвечай кратко и по делу на русском языке."},
                 {"role": "user", "content": user_text}
