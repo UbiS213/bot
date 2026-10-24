@@ -80,7 +80,7 @@ def calculate(expression: str) -> str:
 # --- НЕЙРОСЕТЬ (ДЛЯ ОТВЕТОВ НА ЛЮБЫЕ ВОПРОСЫ) ---
 def ask_llm(user_text: str) -> str:
     """Отправляет запрос в нейросеть через OpenRouter."""
-    if not OPENROUTER_API_KEY or OPENROUTER_API_KEY == "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":
+    if not OPENROUTER_API_KEY or OPENROUTER_API_KEY == "ВАШ_КЛЮЧ_OPENROUTER":
         return "Извините, я пока не умею отвечать на сложные вопросы (не настроен ключ нейросети)."
     
     try:
