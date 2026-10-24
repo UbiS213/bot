@@ -17,7 +17,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 # === НАСТРОЙКИ ===
 TOKEN = os.getenv("BOT_TOKEN", "8724200206:AAH8LsWxfSFSzP0EooAGUYygsVStjYtAHTg")
 # Ключ от OpenRouter (добавьте его в переменные Railway)
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "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")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "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")
 
 WEB_SERVER_HOST = "0.0.0.0"
 WEB_SERVER_PORT = int(os.getenv("PORT", 8080))
