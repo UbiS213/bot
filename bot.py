@@ -5,7 +5,7 @@ import math
 import json
 import urllib.request
 import urllib.parse
-import requests # Нужно добавить в requirements.txt
+import requests
 from datetime import datetime
 import pytz
 from aiohttp import web
